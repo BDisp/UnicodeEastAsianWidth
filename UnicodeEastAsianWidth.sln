@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnicodeEastAsianWidth", "Un
 		{88308925-B1A7-4E91-8BE5-5843DCE525E6} = {88308925-B1A7-4E91-8BE5-5843DCE525E6}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnicodeEastAsianWidth.Tests", "UnicodeEastAsianWidth.Tests\UnicodeEastAsianWidth.Tests.csproj", "{2DDACEF7-F8AF-407D-BF98-DA4C8937982A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,6 +26,10 @@ Global
 		{C58C88FC-3990-4FC7-B3C3-F666DA66417A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C58C88FC-3990-4FC7-B3C3-F666DA66417A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C58C88FC-3990-4FC7-B3C3-F666DA66417A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DDACEF7-F8AF-407D-BF98-DA4C8937982A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DDACEF7-F8AF-407D-BF98-DA4C8937982A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DDACEF7-F8AF-407D-BF98-DA4C8937982A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DDACEF7-F8AF-407D-BF98-DA4C8937982A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -15,6 +15,11 @@
 		<RequireLicenseAcceptance>false</RequireLicenseAcceptance>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<IncludeXmlDocumentation>true</IncludeXmlDocumentation>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<!-- Add a link to EastAsianWidthData.cs -->
 		<Compile Include="..\UnicodeEastAsianWidth.Generator\EastAsianWidthData.cs">
