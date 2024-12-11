@@ -1,13 +1,78 @@
 namespace UnicodeEastAsianWidth
 {
-    public enum EastAsianWidth { Neutral, Narrow, Wide, Ambiguous, HalfWidth, FullWidth }
+    /// <summary>
+    /// Represents the East Asian Width categories for Unicode characters.
+    /// </summary>
+    /// <remarks>
+    /// The East Asian Width property is used to classify Unicode characters based on their width 
+    /// in contexts such as terminal emulators or text rendering. The categories include:
+    /// For more information, refer to the Unicode Consortium's East Asian Width specification.
+    /// </remarks>
+    public enum EastAsianWidth
+    {
+        /// Characters with no specific width classification.
+        Neutral,
+        /// Characters that typically occupy a narrow cell.
+        Narrow,
+        /// Characters that typically occupy a wide cell.
+        Wide,
+        /// Characters whose width can vary depending on the context.
+        Ambiguous,
+        /// Characters that occupy half the width of a standard wide cell.
+        HalfWidth,
+        /// Characters that occupy the full width of a standard wide cell.
+        FullWidth
+    }
 
+    /// <summary>
+    /// Provides access to East Asian Width data for Unicode characters.
+    /// </summary>
+    /// <remarks>
+    /// The <c>EastAsianWidthData</c> class contains a static list of <see cref="Entry" />
+    /// objects, representing Unicode character ranges and their metadata.
+    /// This data is derived from the Unicode Consortium's East Asian Width specification.
+    /// </remarks>
+    /// <example>
+    /// Example usage:
+    /// <code>
+    /// var width = EastAsianWidthData.Entries.FirstOrDefault(entry => codePoint &amp;gt;= entry.Start &amp;&amp; codePoint &amp;lt;= entry.End)?.Width;
+    /// </code>
+    /// </example>
     public static class EastAsianWidthData
     {
+        /// <summary>
+        /// Represents a range of Unicode code points and their associated East Asian Width metadata.
+        /// </summary>
+        /// <param name="Start">The starting Unicode code point of the range.</param>
+        /// <param name="End">The ending Unicode code point of the range.</param>
+        /// <param name="Width">The East Asian Width classification for the range.</param>
+        /// <param name="GeneralCategory">The general Unicode category (e.g., "Lo" for Letter, Other).</param>
+        /// <param name="RangeLength">The number of code points in the range.</param>
+        /// <param name="StartName">The descriptive name of the starting code point.</param>
+        /// <param name="EndName">The descriptive name of the ending code point.</param>
+        /// <remarks>
+        /// This record provides detailed information about a contiguous range of Unicode characters. 
+        /// It includes the range's start and end points, the East Asian Width classification, and 
+        /// additional metadata such as the Unicode general category and names for the start and end points.
+        /// </remarks>
+        /// <example>
+        /// Example usage:
+        /// <code>
+        /// var entry = new Entry(0x4E00, 0x4E2F, EastAsianWidth.Wide, "Lo", 48, "CJK Ideograph 一", "CJK Ideograph 丯");
+        /// </code>
+        /// </example>
         public record Entry(uint Start, uint End, EastAsianWidth Width, string GeneralCategory, int RangeLength, string StartName, string EndName);
 
-        public static readonly Entry[] Entries = new[]
-        {
+        /// <summary>
+        /// A collection of all Unicode character ranges with their associated East Asian Width metadata.
+        /// </summary>
+        /// <remarks>
+        /// This property provides a comprehensive list of Unicode character ranges. Each entry includes
+        /// the starting and ending code points, the East Asian Width classification, general Unicode
+        /// category, range length, and the descriptive names of the start and end points.
+        /// </remarks>
+        public static readonly Entry[] Entries =
+        [
             new Entry(0x0000, 0x001F, EastAsianWidth.Neutral, "Cc", 32, "<control-0000>", "<control-001F>"),
             new Entry(0x0020, 0x0020, EastAsianWidth.Narrow, "Zs", 1, "SPACE", "SPACE"),
             new Entry(0x0021, 0x0023, EastAsianWidth.Narrow, "Po", 3, "EXCLAMATION MARK", "NUMBER SIGN"),
@@ -2651,6 +2716,6 @@ namespace UnicodeEastAsianWidth
             new Entry(0xE0100, 0xE01EF, EastAsianWidth.Ambiguous, "Mn", 240, "VARIATION SELECTOR-17", "VARIATION SELECTOR-256"),
             new Entry(0xF0000, 0xFFFFD, EastAsianWidth.Ambiguous, "Co", 65534, "<private-use-F0000>", "<private-use-FFFFD>"),
             new Entry(0x100000, 0x10FFFD, EastAsianWidth.Ambiguous, "Co", 65534, "<private-use-100000>", "<private-use-10FFFD>"),
-        };
+        ];
     }
 }
