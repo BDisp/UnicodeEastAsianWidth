@@ -8,7 +8,7 @@ public static class Program
 
     public static async Task Main(string[] args)
     {
-        string projectDirectory = Directory.GetParent(AppContext.BaseDirectory)?.Parent?.Parent?.Parent?.FullName!;
+        var projectDirectory = Directory.GetParent(AppContext.BaseDirectory)?.Parent?.Parent?.Parent?.FullName!;
         var inputFilePath = Path.Combine(projectDirectory, InputFileName);
 
         if (!File.Exists(inputFilePath))

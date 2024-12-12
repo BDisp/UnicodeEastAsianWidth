@@ -31,4 +31,8 @@
 		<Error Text="EastAsianWidthData.cs not found. Build the UnicodeEastAsianWidth.Generator project first."
 		       Condition="!Exists('..\UnicodeEastAsianWidth.Generator\EastAsianWidthData.cs')" />
 	</Target>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="UnicodeEastAsianWidth.Tests" />
+	</ItemGroup>
 </Project>

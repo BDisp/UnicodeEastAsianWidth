@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace UnicodeEastAsianWidth;
@@ -34,11 +36,12 @@ public static class UnicodeEastAsianWidth
     /// The <see cref="EastAsianWidth"/> category for the code point,
     /// or <c>null</c> if the code point is not found in any range.
     /// </returns>
-    public static EastAsianWidth? GetEastAsianWidth(uint codePoint)
+    public static EastAsianWidth GetEastAsianWidth(uint codePoint)
     {
-        return EastAsianWidthData.Entries
-            .FirstOrDefault(entry => codePoint >= entry.Start && codePoint <= entry.End)
-            ?.Width;
+        var entry = EastAsianWidthData.Entries
+            .FirstOrDefault(entry => codePoint >= entry.Start && codePoint <= entry.End);
+
+        return entry?.Width ?? EastAsianWidth.Neutral;
     }
 
     /// <summary>
@@ -85,5 +88,79 @@ public static class UnicodeEastAsianWidth
     {
         return EastAsianWidthData.Entries
             .FirstOrDefault(entry => codePoint >= entry.Start && codePoint <= entry.End);
+    }
+
+    /// <summary>
+    /// Retrieves the UnicodeCategory for the specified code point.
+    /// </summary>
+    /// <param name="codePoint">The Unicode code point.</param>
+    /// <returns>The UnicodeCategory of the code point.</returns>
+    public static UnicodeCategory GetGeneralCategory(uint codePoint)
+    {
+        var entry = EastAsianWidthData.Entries
+            .FirstOrDefault(e => codePoint >= e.Start && codePoint <= e.End);
+
+        if (entry == null)
+        {
+            return UnicodeCategory.OtherNotAssigned;
+        }
+
+        // Handle the special case for L& (Cased Letter)
+        if (entry.GeneralCategory == "L&")
+        {
+            return GetUnicodeCategoryFromApi(codePoint);
+        }
+
+        // Convert GeneralCategory string to UnicodeCategory enum
+        return entry.GeneralCategory switch
+        {
+            "Lu" => UnicodeCategory.UppercaseLetter,
+            "Ll" => UnicodeCategory.LowercaseLetter,
+            "Lt" => UnicodeCategory.TitlecaseLetter,
+            "Lm" => UnicodeCategory.ModifierLetter,
+            "Lo" => UnicodeCategory.OtherLetter,
+            "Mn" => UnicodeCategory.NonSpacingMark,
+            "Mc" => UnicodeCategory.SpacingCombiningMark,
+            "Me" => UnicodeCategory.EnclosingMark,
+            "Nd" => UnicodeCategory.DecimalDigitNumber,
+            "Nl" => UnicodeCategory.LetterNumber,
+            "No" => UnicodeCategory.OtherNumber,
+            "Zs" => UnicodeCategory.SpaceSeparator,
+            "Zl" => UnicodeCategory.LineSeparator,
+            "Zp" => UnicodeCategory.ParagraphSeparator,
+            "Cc" => UnicodeCategory.Control,
+            "Cf" => UnicodeCategory.Format,
+            "Co" => UnicodeCategory.PrivateUse,
+            "Cs" => UnicodeCategory.Surrogate,
+            "Pd" => UnicodeCategory.DashPunctuation,
+            "Pi" => UnicodeCategory.InitialQuotePunctuation,
+            "Ps" => UnicodeCategory.OpenPunctuation,
+            "Pe" => UnicodeCategory.ClosePunctuation,
+            "Pc" => UnicodeCategory.ConnectorPunctuation,
+            "Pf" => UnicodeCategory.FinalQuotePunctuation,
+            "Po" => UnicodeCategory.OtherPunctuation,
+            "Sm" => UnicodeCategory.MathSymbol,
+            "Sc" => UnicodeCategory.CurrencySymbol,
+            "Sk" => UnicodeCategory.ModifierSymbol,
+            "So" => UnicodeCategory.OtherSymbol,
+            "Cn" => UnicodeCategory.OtherNotAssigned,
+            _ => throw new InvalidOperationException($"Unknown GeneralCategory: {entry.GeneralCategory}")
+        };
+    }
+
+    /// <summary>
+    /// Internal method to determine the specific UnicodeCategory for Cased Letters (L&).
+    /// </summary>
+    /// <param name="codePoint">The Unicode code point.</param>
+    /// <returns>The specific UnicodeCategory (Lu, Ll, or Lt).</returns>
+    internal static UnicodeCategory GetUnicodeCategoryFromApi(uint codePoint)
+    {
+        if (codePoint <= char.MaxValue)
+        {
+            return char.GetUnicodeCategory((char)codePoint);
+        }
+
+        // For supplementary characters (above BMP)
+        return CharUnicodeInfo.GetUnicodeCategory((int)codePoint);
     }
 }
