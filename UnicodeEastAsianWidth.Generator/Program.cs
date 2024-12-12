@@ -1,6 +1,4 @@
-﻿//#define DOWNLOAD_FILE
-
-using UnicodeEastAsianWidth.Generator;
+﻿using UnicodeEastAsianWidth.Generator;
 
 public static class Program
 {
@@ -12,10 +10,13 @@ public static class Program
     {
         string projectDirectory = Directory.GetParent(AppContext.BaseDirectory)?.Parent?.Parent?.Parent?.FullName!;
         var inputFilePath = Path.Combine(projectDirectory, InputFileName);
-#if DOWNLOAD_FILE
-        Console.WriteLine("Downloading file...");
-        await DownloadFileAsync(FileUrl, inputFilePath);
-#endif
+
+        if (!File.Exists(inputFilePath))
+        {
+            Console.WriteLine("Downloading file...");
+            await DownloadFileAsync(FileUrl, inputFilePath);
+        }
+
         Console.WriteLine($"Processing file: {inputFilePath}");
 
         // Parse the file
